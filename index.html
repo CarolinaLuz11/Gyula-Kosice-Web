@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyula Kosice: En tiempo real - Museo Castagnino</title>
+    <style>
+        :root {
+            --color-primario: #0a192f;
+            --color-secundario: #00b4d8;
+            --color-oscuro: #0f172a;
+            --color-claro: #f8fafc;
+            --blanco: #ffffff;
+            --texto-mutado: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-claro);
+            color: var(--color-oscuro);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--color-primario);
+            color: var(--blanco);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: auto;
+            height: 1.5rem;
+            max-height: 46px;
+            object-fit: contain;
+        }
+
+        .logo h1 {
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        .logo span {
+            color: var(--color-secundario);
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--blanco);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        nav ul li a:hover {
+            color: var(--color-secundario);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(10, 25, 47, 0.45), rgba(15, 23, 42, 0.55)), 
+  url('kosice-fondo.jpg') no-repeat center center/cover;
+            height: 65vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--blanco);
+            padding: 0 20px;
+        }
+
+        .hero-content max-width {
+            max-width: 800px;
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            font-weight: 300;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h3 {
+            font-size: 2.2rem;
+            color: var(--color-primario);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitulo-seccion {
+            text-align: center;
+            color: var(--color-secundario);
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Sobre la Muestra */
+        .presentacion-muestra {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .texto-muestra p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: justify;
+            color: #334155;
+        }
+
+        .ficha-tecnica {
+            background-color: var(--blanco);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border-left: 4px solid var(--color-secundario);
+        }
+
+        .ficha-tecnica h4 {
+            color: var(--color-primario);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+
+        .ficha-tecnica p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .ficha-tecnica strong {
+            color: var(--color-primario);
+        }
+
+        /* Horarios y Visitas */
+        .horarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .tarjeta-horario {
+            background-color: var(--blanco);
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s;
+        }
+
+        .tarjeta-horario h4 {
+            color: var(--color-primario);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tarjeta-horario ul {
+            list-style: none;
+        }
+
+        .tarjeta-horario ul li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.05rem;
+        }
+
+        .tarjeta-horario ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* Galería de Muestras */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .muestra-card {
+            background-color: var(--blanco);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .muestra-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .muestra-card img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            background-color: #0f172a;
+        }
+
+        .muestra-card-info {
+            padding: 25px;
+        }
+
+        .muestra-card-info h4 {
+            color: var(--color-primario);
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+
+        .muestra-card-info .datos-tecnicos {
+            font-size: 0.85rem;
+            color: var(--color-secundario);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .muestra-card-info p {
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+
+        .autor-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 50px;
+            background-color: var(--blanco);
+            padding: 45px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .autor-img {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .autor-texto h4 {
+            font-size: 1.8rem;
+            color: var(--color-primario);
+            margin-bottom: 2px;
+        }
+
+        .autor-texto .fechas {
+            color: var(--texto-mutated);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .autor-texto p {
+            font-size: 1.05rem;
+            color: #334155;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .autor-texto blockquote {
+            border-left: 3px solid var(--color-secundario);
+            padding-left: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--color-primario);
+            font-size: 1rem;
+        }
+
+        /* Organización y Créditos */
+        .creditos-seccion {
+            background-color: #0a192f;
+            color: #94a3b8;
+            padding: 60px 0;
+            font-size: 0.9rem;
+        }
+
+        .creditos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .creditos-col h5 {
+            color: var(--blanco);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .creditos-col p {
+            margin-bottom: 8px;
+        }
+
+        .creditos-col strong {
+            color: #cbd5e1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-oscuro);
+            color: #64748b;
+            text-align: center;
+            padding: 25px 0;
+            font-size: 0.85rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .footer-logos img {
+            height: 40px;
+            width: auto;
+            opacity: 0.8;
+            filter: grayscale(60%);
+            transition: opacity 0.2s, filter 0.2s, transform 0.2s;
+        }
+
+        .footer-logos img.logo-macro {
+            height: 80px;
+        }
+
+        .footer-logos img:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: translateY(-2px);
+        }
+
+        /* Responsivo */
+        @media (max-width: 992px) {
+            .presentacion-muestra {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .autor-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .autor-texto blockquote {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+            .hero-content h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado y Navegación -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="logo-museo.png" alt="Logo Museo Castagnino">
+                <h1>MUSEO CASTAGNINO</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#muestra">La Muestra</a></li>
+                    <li><a href="#horarios">Horarios</a></li>
+                    <li><a href="#obras">Obras</a></li>
+                    <li><a href="#artista">El Artista</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección de Bienvenida (Hero) con fondo modificado -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h2> Gyula Kosice: En tiempo real </h2>
+            <p> <strong>  Un viaje fascinante a través del tiempo y la creatividad humana. </strong></p>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- Información sobre la Muestra del Museo -->
+        <section id="muestra">
+                        <h3> Sobre la muestra </h3>
+            <div class="subtitulo-seccion">Exposición Temporal</div>
+            
+            <div class="presentacion-muestra">
+                <div class="texto-muestra">
+                    <p>El concepto de tiempo real en el campo de las artes remite a aquellas prácticas  cuyos procesos de acción y recepción se corresponden temporalmente: las transformaciones experimentadas por las obras coinciden sincrónicamente con el tiempo del público. En lugar de representar acontecimientos pasados o construir ficciones diferidas, el arte en tiempo real sucede en el mismo momento en que es experimentado. La obra se actualiza en cada instante y el gesto artístico deviene en el propio comportamiento de la pieza. El foco en la dimensión objetual de la obra se desplaza, así, hacia la pura experiencia temporal y se percibe, por ejemplo, en el carácter efímero de la propuesta estética, en las lógicas procesuales, en la participación activa por parte del público, en la impermanencia de las obras, o en su consecuente inestabilidad.  </p>
+                    <p>La temprana incursión de Kosice en la creación de obras en tiempo real no constituye un gesto secundario, sino que entraña un impulso sostenido por explorar los límites y las posibilidades de la materia, la energía y la percepción. Ya en la década del veinte del siglo pasado, algunos de los artistas que influyeron marcadamente en la obra kosiceana hacían alusión a la dimensión temporal, a la idea de los materiales como portadores de fuerzas y a la inclusión del público en las obras. En el Manifiesto Constructivista de 1920, Naum Gabo y Antoine Pevsner defendieron los ritmos cinéticos como “formas basilares de nuestra percepción del tiempo real” , e incitaron así a erradicar los ritmos estáticos como elementos únicos y privilegiados en las artes plásticas. Cuatro años más tarde, László Moholy-Nagy y Alfred Kemény promovieron el reemplazo de la construcción material estática por una construcción dinámica, cuyos funcionarían como “transportadores de energía”; escribieron que en los “sistemas dinámico-constructivos de fuerzas” , el ser humano hasta entonces pasivo podría experimentar una intensificación de sus propias facultades, hasta convertirse en un socio activo de las fuerzas que se despliegan.</p>
+                    <p>Es a través de la dimensión de tiempo real que Kosice articula las búsquedas de las primeras vanguardias —la integración arte/vida, la incorporación de materiales heterodoxos, la construcción de imaginarios utópicos— con preocupaciones que poco a poco definirán la esfera de aquello que la historiografía más tarde designará como arte contemporáneo: la participación activa del público, la obsolescencia y variabilidad de la obra a lo largo del tiempo, la generatividad,  la primacía de la experiencia sobre el objeto cerrado y terminado, y la libre combinación de materiales físicos y tangibles hasta el momento ajenos al ámbito de las artes, entre ellos agua y plásticos, con materialidades inasibles como electrones, fotones y bits. </p>
+                    
+                    <p>Esta exposición reúne un conjunto de obras de Kosice, desarrolladas a lo largo de su prolífica producción artística, que demuestran distintas configuraciones de la categoría de tiempo real. En todos los casos, el tiempo deja de ser concebido como un marco externo o subsidiario para devenir en sustancia viva. La dimensión temporal se convierte en una fuerza activa, donde confluye el comportamiento de la obra con la instancia de su recepción, signada por la experiencia del público. Kosice inaugura así una sensibilidad que trasciende la objetualidad moderna para abrir paso a una noción de obra como organismo temporal, un campo de relaciones y tensiones en el que la acción resiste a ser fijada; simplemente fluye como el agua y es allí donde la obra acontece.</p>
+                 <p>------------------- ------------------- ------------------- ------------------- ------------------- ---------- </p>
+                   <p>   1 Gabo, N. y Pevsner, A. (1920). “Manifiesto Constructivista”. En De Micheli, M. (1979). Las vanguardias artísticas del siglo XX. Madrid: Alianza Forma. </p>
+                    <p> 2 Moholy-Nagy, L. y Kemény, A. (1924). “Sistema Constructivo-Dinámico-Fuerza”. En Calvo Serraller, F., González García, A. y Marchan Fiz, S. (2009). Escritos de Vanguardia 1900/1945. Madrid: Akal </p>
+
+                </div>
+                
+                <div class="ficha-tecnica">
+                    <h4>Detalles</h4>
+                    <p><strong>Curaduría:</strong> Jazmín Adler</p>
+                    <p><strong>Lugar:</strong> Museo Municipal de Bellas Artes Juan B. Castagnino, Rosario, Argentina.</p>
+                    <p><strong>Fecha:</strong> Del 30 de abril al 17 de agosto, 2026</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Horarios de Visita y Visitas Acompañadas -->
+        <section id="horarios">
+            <h3>Horarios y Visitas</h3>
+            <div class="subtitulo-seccion">Planifica tu recorrido</div>
+            
+            <div class="horarios-grid">
+                <!-- Horarios de Visita Libre -->
+                <div class="tarjeta-horario">
+                    <h4>Horarios del Museo</h4>
+                    <ul>
+                        <li><span>Martes a Viernes:</span> <span>13:00 - 19:00 hs</span></li>
+                        <li><span>Sábados y Domingos:</span> <span>10:00 - 19:00 hs</span></li>
+                        <li><span>Feriados:</span> <span>10:00 - 19:00 hs</span></li>
+                    </ul>
+                </div>
+
+                <!-- Horarios de Visitas Acompañadas -->
+                <div class="tarjeta-horario">
+                    <h4>Visitas Acompañadas</h4>
+                    <ul>
+                        <li><span>Miércoles a Viernes:</span> <span>17:00 hs</span></li>
+                        <li><span>Sábados y Domingos:</span> <span>11:00 y 17:00 hs</span></li>
+                        <li><span>Feriados:</span> <span>11:00 y 17:00 hs</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Imágenes de Muestras del Museo (Obras) -->
+        <section id="obras">
+            <h3>Obras en Exhibición</h3>
+            <div class="subtitulo-seccion">Selección de la muestra</div>
+            
+            <div class="galeria-grid">
+                
+                <!-- Obra 1 -->
+                <div class="muestra-card">
+                    <img src="neon.jpg.jpg" alt="Escultura lumínica gas neón">
+                    <div class="muestra-card-info">
+                        <h4>Escultura lumínica gas neón (2005)</h4>
+                        <div class="datos-tecnicos">Gas neón | 76 x 26 x 23 cm</div>
+                        <p>Colección Fundación Kosice.</p>
+                    </div>
+                </div>
+                <div class="muestra-card">
+                    <img src="gota.jpg.jpg" alt="Gota de agua móvil con círculos">
+                    <div class="muestra-card-info">
+                        <h4>Gota de agua móvil con círculos (2007)</h4>
+                        <div class="datos-tecnicos">Acrílico, luz, agua móvil | 65 x 50 x 23 cm</div>
+                        <p>Colección Museo Kosice.</p>
+                    </div>
+                </div>
+
+                
+                <div class="muestra-card">
+                    <img src="homenaje.jpg.jpg" alt="Homenaje a Moholy-Nagy">
+                    <div class="muestra-card-info">
+                        <h4>Homenaje a Moholy-Nagy (2009)</h4>
+                        <div class="datos-tecnicos">Acrílico, agua móvil, luz móvil LED, gas neón | 79 x 61 x 15 cm</div>
+                        <p>Colección Museo Kosice.</p>
+                    </div>
+                </div>
+
+                
+                <div class="muestra-card">
+                    <img src="ciudad.jpg.jpg" alt="La Ciudad Hidroespacial">
+                    <div class="muestra-card-info">
+                        <h4>La Ciudad Hidroespacial en la constelación de Vivian (2009)</h4>
+                        <div class="datos-tecnicos">Proyecto artístico-urbanístico</div>
+                        <p>Colección Museo Kosice.</p>
+                    </div>
+                </div>
+
+                
+                <div class="muestra-card">
+                    <img src="movil.jpg.jpg" alt="Móvil de luz">
+                    <div class="muestra-card-info">
+                        <h4>Móvil de luz (1988)</h4>
+                        <div class="datos-tecnicos">Plexiglás, lámparas coloreadas y madera | 45 x 45 x 13 cm</div>
+                        <p>Colección Museo Kosice.</p>
+                    </div>
+                </div>
+<!-- Obra 6 -->
+<div class="muestra-card">
+    <img src="Dosespacios.jpg" alt="Dos espacios">
+    <div class="muestra-card-info">
+        <h4>Dos espacios (1949)</h4>
+        <div class="datos-tecnicos">Esmalte sobre madera | 77 x 46 x 1 cm</div>
+        <p>Colección Castagnino+macro.</p>
+    </div>
+</div>
+            </div>
+        </section>
+
+        <!-- Información del Autor / Artista -->
+        <section id="artista">
+            <h3>El Artista</h3>
+            <div class="subtitulo-seccion"> Bibliografia </div>
+            
+            <div class="autor-container">
+                <img class="autor-img" src="Gyula Kosice - Télam (1).webp" alt="Gyula Kosice">
+                <div class="autor-texto">
+                    <h4>Gyula Kosice</h4>
+                    <p class="fechas">Kosice, 1924 - Buenos Aires, 2016</p>
+                    <p>Nació con el nombre de Ferdinand Fallik, el 26 de abril de 1924 en el seno de una familia húngara, sin embargo, tomó por nombre el de su ciudad natal, Kosice, un modo de recordarla para siempre. “Kosice”, a secas, así prefería que lo llamaran. Llegó al país a los cuatro años de edad, en 1928, y más tarde se naturalizó como argentino. 
+Estudió dibujo y modelado en academias de cursos libres, y asistió por un período breve de tiempo a la Escuela de Bellas Artes Manuel Belgrano.
+</p>
+                    <p>En 1944 creó <em>Röyi</em>, , la primera escultura articulada y móvil de Latinoamérica. Ese mismo año integra el grupo editor de la revista Arturo –que proponía un arte de pura invención, no figurativo–, en la que publicó tanto textos teóricos como poemas. En octubre de 1945 participó en una exposición en la casa del psicoanalista Enrique Pichon-Rivière y, en diciembre, en la casa de la fotógrafa Grete Stern.</p>
+                    <p>En 1946 funda el<em> Arte Madí</em>, lo nombra y escribe su manifiesto. Propone la creación e invención totales, liberando al arte de todas las ataduras. Fue un gran impulsor de esa agrupación, organizó numerosas exposiciones y contribuyó a su difusión internacional. Fundó y dirigió la revista Arte Madí Universal, de la que editó ocho números. En 1948 fue invitado a exponer obras del grupo en el Salon des Réalités Nouvelles de París, lo que llevó a Madí a consagrarse a nivel internacional. </p>
+                    <p>Atraído por el uso de nuevos materiales, Kosice experimentó con plexiglás, vidrio y tubos de gas de neón. Más adelante, a su interés por el movimiento, le sumó el uso del agua y empezó a hacer esculturas hidrocinéticas.
+
+A partir de su afirmación “El hombre no ha de terminar en la tierra”, que realizó en la revista Arturo, a comienzos de los años setenta creó la Ciudad Hidroespacial, un proyecto urbanístico, artístico y poético que propone hábitats suspendidos en el aire a partir de la energía contenida en el agua. La mayor parte de esta obra se encuentra hoy en el Museum of Fine Arts of Houston.
+ </p>
+ <p>Atraído por el uso de nuevos materiales, Kosice experimentó con plexiglás, vidrio y tubos de gas de neón. Más adelante, a su interés por el movimiento, le sumó el uso del agua y empezó a hacer esculturas hidrocinéticas.
+
+A partir de su afirmación “El hombre no ha de terminar en la tierra”, que realizó en la revista Arturo, a comienzos de los años setenta creó la Ciudad Hidroespacial, un proyecto urbanístico, artístico y poético que propone hábitats suspendidos en el aire a partir de la energía contenida en el agua. La mayor parte de esta obra se encuentra hoy en el Museum of Fine Arts of Houston.
+</p>
+                    
+                    
+                    <blockquote>
+                        "Si la obra de arte, si mi obra de arte no habla, entonces no valgo nada; la obra tiene que hablar por sí misma, a través de su presencia y su creación... El peor que le puede pasar a una artista es alimentar permanentemente su ego; debe poder consolidar una cierta humildad para que ello permita alcanzar una difusión del más alto nivel, lo que significa llegar al pueblo, a los otros."
+                    </blockquote>
+                    <p> Hizo cincuenta exposiciones individuales e integró más de 500 muestras colectivas. Así como también publicó 18 libros.
+</p>
+                    <p>Sus obras figuran en museos y colecciones privadas de Argentina, de Latinoamérica, de Estados Unidos, de Europa y de Asia.
+</p>
+                    <p>Murió el 25 de mayo de 2016, a los 92 años, en la Ciudad de Buenos Aires.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Sección de Créditos e Instituciones -->
+    <div class="creditos-seccion">
+        <div class="creditos-grid">
+            <div class="creditos-col">
+                <h5>Organiza</h5>
+                <p>Museo Municipal de Bellas Artes Juan B. Castagnino</p>
+                <p>Municipalidad de Rosario</p>
+            </div>
+            <div class="creditos-col">
+                <h5>Colaboran y Acompañan</h5>
+                <p>Fundación Castagnino</p>
+                <p>La Segunda / Fundar / Tersuave</p>
+            </div>
+            <div class="creditos-col">
+                <h5>Equipo Ejecutivo</h5>
+                <p><strong>Dirección Ejecutiva:</strong> Melania Toia</p>
+                <p><strong>Dirección Artística:</strong> Roberto Echen</p>
+                <p><strong>Coordinación General:</strong> Daniela Quintero</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-logos">
+            <img src="la-segunda.png" alt="La Segunda Seguros">
+            <img src="fundar.png" alt="Fundar">
+            <img src="tersuave.png" alt="Tersuave">
+        </div>
+        <p>&copy; 2026 Museo Municipal de Bellas Artes Juan B. Castagnino. Información recopilada para fines expositivos.</p>
+    </footer>
+
+</body>
+</html>
